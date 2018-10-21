@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\MediaToolkit\MediaToolkit.csproj" />
+    <ProjectReference Include="..\..\src\MediaToolkit\MediaToolkit.csproj" />
   </ItemGroup>
 
 </Project>

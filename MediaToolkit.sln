@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediaToolkit", "src\MediaTo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "example", "example", "{1C69D3C1-4BED-4F3D-A3F3-A78E1AF81580}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic", "Basic\Basic.csproj", "{98170F69-45BB-4D45-8DE5-7EBFB8EF70DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basic", "example\Basic\Basic.csproj", "{D36179BD-F9FF-41F1-B3C3-A35EE66456BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,17 +21,17 @@ Global
 		{C0BB8560-EDD0-4002-B863-9CD3FD5F9363}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C0BB8560-EDD0-4002-B863-9CD3FD5F9363}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C0BB8560-EDD0-4002-B863-9CD3FD5F9363}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98170F69-45BB-4D45-8DE5-7EBFB8EF70DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98170F69-45BB-4D45-8DE5-7EBFB8EF70DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98170F69-45BB-4D45-8DE5-7EBFB8EF70DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98170F69-45BB-4D45-8DE5-7EBFB8EF70DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D36179BD-F9FF-41F1-B3C3-A35EE66456BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D36179BD-F9FF-41F1-B3C3-A35EE66456BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D36179BD-F9FF-41F1-B3C3-A35EE66456BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D36179BD-F9FF-41F1-B3C3-A35EE66456BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C0BB8560-EDD0-4002-B863-9CD3FD5F9363} = {4F724288-1FCA-4D84-8D6C-C0E5F2BFB942}
-		{98170F69-45BB-4D45-8DE5-7EBFB8EF70DE} = {1C69D3C1-4BED-4F3D-A3F3-A78E1AF81580}
+		{D36179BD-F9FF-41F1-B3C3-A35EE66456BD} = {1C69D3C1-4BED-4F3D-A3F3-A78E1AF81580}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C6BA44B7-98CA-4AC6-A26D-981B9EE03CD6}

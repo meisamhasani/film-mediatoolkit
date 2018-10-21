@@ -24,14 +24,15 @@
 
         }
 
-        /// -------------------------------------------------------------------------------------------------
+        /// <summary>   Event queue for all listeners interested in convertProgress events. </summary>
+        public event EventHandler<ConvertProgressEventArgs> ConvertProgressEvent;
+
         /// <summary>
-        ///     <para> ---</para>
         ///     <para> Converts media with conversion options</para>
         /// </summary>
-        /// <param name="inputFile">    Input file. </param>
-        /// <param name="outputFile">   Output file. </param>
-        /// <param name="options">      Conversion options. </param>
+        /// <param name="inputFile">Input file</param>
+        /// <param name="outputFile">Output file. </param>
+        /// <param name="options">Conversion options. </param>
         public void Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions options)
         {
             EngineParameters engineParams = new EngineParameters
@@ -47,7 +48,6 @@
 
         /// -------------------------------------------------------------------------------------------------
         /// <summary>
-        ///     <para> ---</para>
         ///     <para> Converts media with default options</para>
         /// </summary>
         /// <param name="inputFile">    Input file. </param>
@@ -64,9 +64,6 @@
             this.FFmpegEngine(engineParams);
         }
 
-        /// <summary>   Event queue for all listeners interested in convertProgress events. </summary>
-        public event EventHandler<ConvertProgressEventArgs> ConvertProgressEvent;
-
         public void CustomCommand(string ffmpegCommand)
         {
             if (ffmpegCommand.IsNullOrWhiteSpace())
@@ -79,7 +76,6 @@
             this.StartFFmpegProcess(engineParameters);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>
         ///     <para> Retrieve media metadata</para>
         /// </summary>
@@ -95,7 +91,6 @@
             this.FFmpegEngine(engineParams);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>   Retrieve a thumbnail image from a video file. </summary>
         /// <param name="inputFile">    Video file. </param>
         /// <param name="outputFile">   Image file. </param>
@@ -112,8 +107,6 @@
 
             this.FFmpegEngine(engineParams);
         }
-
-        #region Private method - Helpers
 
         private void FFmpegEngine(EngineParameters engineParameters)
         {
@@ -173,9 +166,6 @@
             }
         }
 
-        #endregion
-
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>   Raises the conversion complete event. </summary>
         /// <param name="e">    Event information to send to registered event handlers. </param>
         private void OnConversionComplete(ConversionCompleteEventArgs e)
@@ -187,7 +177,6 @@
             }
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>   Raises the convert progress event. </summary>
         /// <param name="e">    Event information to send to registered event handlers. </param>
         private void OnProgressChanged(ConvertProgressEventArgs e)
@@ -212,12 +201,12 @@
         /// <param name="engineParameters"> The engine parameters. </param>
         private void StartFFmpegProcess(EngineParameters engineParameters)
         {
-            List<string> receivedMessagesLog = new List<string>();
-            TimeSpan totalMediaDuration = new TimeSpan();
+            var receivedMessagesLog = new List<string>();
+            var totalMediaDuration = new TimeSpan();
 
-            ProcessStartInfo processStartInfo = engineParameters.HasCustomArguments
-                                              ? this.GenerateStartInfo(engineParameters.CustomArguments)
-                                              : this.GenerateStartInfo(engineParameters);
+            var processStartInfo = engineParameters.HasCustomArguments
+                    ? this.GenerateStartInfo(engineParameters.CustomArguments)
+                    : this.GenerateStartInfo(engineParameters);
 
             using (this.FFmpegProcess = Process.Start(processStartInfo))
             {
@@ -227,65 +216,10 @@
                     throw new InvalidOperationException(Resources.Exceptions_FFmpeg_Process_Not_Running);
                 }
 
+                //FF MPGET outputs to "sterr" to keep stdout for redirecting to other apps
                 this.FFmpegProcess.ErrorDataReceived += (sender, received) =>
                 {
-                    if (received.Data == null)
-                    {
-                        return;
-                    }
-#if (DebugToConsole)
-                    Console.WriteLine(received.Data);
-#endif
-                    try
-                    {
-
-                        receivedMessagesLog.Insert(0, received.Data);
-                        if (engineParameters.InputFile != null)
-                        {
-                            RegexEngine.TestVideo(received.Data, engineParameters);
-                            RegexEngine.TestAudio(received.Data, engineParameters);
-
-                            Match matchDuration = RegexEngine.Index[RegexEngine.Find.Duration].Match(received.Data);
-                            if (matchDuration.Success)
-                            {
-                                if (engineParameters.InputFile.Metadata == null)
-                                {
-                                    engineParameters.InputFile.Metadata = new Metadata();
-                                }
-
-                                TimeSpan.TryParse(matchDuration.Groups[1].Value, out totalMediaDuration);
-                                engineParameters.InputFile.Metadata.Duration = totalMediaDuration;
-                            }
-                        }
-                        ConversionCompleteEventArgs convertCompleteEvent;
-                        ConvertProgressEventArgs progressEvent;
-
-                        if (RegexEngine.IsProgressData(received.Data, out progressEvent))
-                        {
-                            progressEvent.TotalDuration = totalMediaDuration;
-                            this.OnProgressChanged(progressEvent);
-                        }
-                        else if (RegexEngine.IsConvertCompleteData(received.Data, out convertCompleteEvent))
-                        {
-                            convertCompleteEvent.TotalDuration = totalMediaDuration;
-                            this.OnConversionComplete(convertCompleteEvent);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        // catch the exception and kill the process since we're in a faulted state
-                        caughtException = ex;
-
-                        try
-                        {
-                            this.FFmpegProcess.Kill();
-                        }
-                        catch (InvalidOperationException)
-                        {
-                            // swallow exceptions that are thrown when killing the process, 
-                            // one possible candidate is the application ending naturally before we get a chance to kill it
-                        }
-                    }
+                    HandleOutput(engineParameters, received, receivedMessagesLog, ref totalMediaDuration, ref caughtException);
                 };
 
                 this.FFmpegProcess.BeginErrorReadLine();
@@ -296,6 +230,62 @@
                     throw new Exception(
                         this.FFmpegProcess.ExitCode + ": " + receivedMessagesLog[1] + receivedMessagesLog[0],
                         caughtException);
+                }
+            }
+        }
+
+        private void HandleOutput(EngineParameters engineParameters, DataReceivedEventArgs received, List<string> receivedMessagesLog, ref TimeSpan totalMediaDuration, ref Exception caughtException)
+        {
+            if (received.Data == null)
+            {
+                return;
+            }
+
+            try
+            {
+                receivedMessagesLog.Insert(0, received.Data);
+                if (engineParameters.InputFile != null)
+                {
+                    RegexEngine.TestVideo(received.Data, engineParameters);
+                    RegexEngine.TestAudio(received.Data, engineParameters);
+
+                    Match matchDuration = RegexEngine.Index[RegexEngine.Find.Duration].Match(received.Data);
+                    if (matchDuration.Success)
+                    {
+                        if (engineParameters.InputFile.Metadata == null)
+                        {
+                            engineParameters.InputFile.Metadata = new Metadata();
+                        }
+
+                        TimeSpan.TryParse(matchDuration.Groups[1].Value, out totalMediaDuration);
+                        engineParameters.InputFile.Metadata.Duration = totalMediaDuration;
+                    }
+                }
+
+                if (RegexEngine.IsProgressData(received.Data, out ConvertProgressEventArgs progressEvent))
+                {
+                    progressEvent.TotalDuration = totalMediaDuration;
+                    this.OnProgressChanged(progressEvent);
+                }
+                else if (RegexEngine.IsConvertCompleteData(received.Data, out ConversionCompleteEventArgs convertCompleteEvent))
+                {
+                    convertCompleteEvent.TotalDuration = totalMediaDuration;
+                    this.OnConversionComplete(convertCompleteEvent);
+                }
+            }
+            catch (Exception ex)
+            {
+                // catch the exception and kill the process since we're in a faulted state
+                caughtException = ex;
+
+                try
+                {
+                    this.FFmpegProcess.Kill();
+                }
+                catch (InvalidOperationException)
+                {
+                    // swallow exceptions that are thrown when killing the process, 
+                    // one possible candidate is the application ending naturally before we get a chance to kill it
                 }
             }
         }
