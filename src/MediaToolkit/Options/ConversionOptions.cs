@@ -100,5 +100,4 @@ namespace MediaToolkit.Options
         /// </summary>
         public bool BaselineProfile { get; set; }
     }
-
 }

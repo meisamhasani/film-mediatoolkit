@@ -107,7 +107,6 @@ namespace MediaToolkit.Util
             }
         }
 
-
         /// <summary>
         ///     <para> ---- </para>
         ///     <para>Establishes whether the data indicates the conversion is complete</para>
@@ -128,7 +127,10 @@ namespace MediaToolkit.Util
             Match matchBitrate = Index[Find.ConvertProgressBitrate].Match(data);
 
             if (!matchFrame.Success || !matchFps.Success || !matchFinished.Success || !matchTime.Success ||
-                !matchBitrate.Success) return false;
+                !matchBitrate.Success)
+            {
+                return false;
+            }
 
             TimeSpan processedDuration;
             TimeSpan.TryParse(matchTime.Groups[1].Value, out processedDuration);
@@ -156,9 +158,12 @@ namespace MediaToolkit.Util
             Match matchVideoBitRate = Index[Find.BitRate].Match(fullMetadata);
 
             if (engine.InputFile.Metadata == null)
+            {
                 engine.InputFile.Metadata = new Metadata();
+            }
 
             if (engine.InputFile.Metadata.VideoData == null)
+            {
                 engine.InputFile.Metadata.VideoData = new Metadata.Video
                 {
                     Format = matchVideoFormatColorSize[1].ToString(),
@@ -170,13 +175,17 @@ namespace MediaToolkit.Util
                             ? (int?)Convert.ToInt32(matchVideoBitRate.Groups[1].ToString())
                             : null
                 };
+            }
         }
 
         internal static void TestAudio(string data, EngineParameters engine)
         {
             Match matchMetaAudio = Index[Find.MetaAudio].Match(data);
 
-            if (!matchMetaAudio.Success) return;
+            if (!matchMetaAudio.Success)
+            {
+                return;
+            }
 
             string fullMetadata = matchMetaAudio.Groups[1].ToString();
 
@@ -184,9 +193,12 @@ namespace MediaToolkit.Util
             GroupCollection matchAudioBitRate = Index[Find.BitRate].Match(fullMetadata).Groups;
 
             if (engine.InputFile.Metadata == null)
+            {
                 engine.InputFile.Metadata = new Metadata();
+            }
 
             if (engine.InputFile.Metadata.AudioData == null)
+            {
                 engine.InputFile.Metadata.AudioData = new Metadata.Audio
                 {
                     Format = matchAudioFormatHzChannel[1].ToString(),
@@ -194,6 +206,7 @@ namespace MediaToolkit.Util
                     ChannelOutput = matchAudioFormatHzChannel[3].ToString(),
                     BitRateKbs = !( matchAudioBitRate[1].ToString().IsNullOrWhiteSpace() ) ? Convert.ToInt32(matchAudioBitRate[1].ToString()) : 0
                 };
+            }
         }
 
         internal enum Find

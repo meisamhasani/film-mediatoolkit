@@ -1,16 +1,14 @@
-﻿namespace MediaToolkit
+﻿using MediaToolkit.Properties;
+using MediaToolkit.Util;
+using System;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
+using System.Reflection;
+using System.Threading;
+
+namespace MediaToolkit
 {
-    using System;
-    using System.Configuration;
-    using System.Diagnostics;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Reflection;
-    using System.Threading;
-
-    using MediaToolkit.Properties;
-    using MediaToolkit.Util;
-
     public class EngineBase : IDisposable
     {
         private bool isDisposed;
@@ -30,8 +28,8 @@
         protected Process FFmpegProcess;
 
 
-         protected EngineBase()
-            : this(null)
+        protected EngineBase()
+           : this(null)
         {
         }
 
@@ -52,9 +50,9 @@
 
             this.FFmpegFilePath = ffMpegPath;
 
-            this.EnsureDirectoryExists ();
+            this.EnsureDirectoryExists();
             this.EnsureFFmpegFileExists();
-            this.EnsureFFmpegIsNotUsed ();
+            this.EnsureFFmpegIsNotUsed();
         }
 
         private void EnsureFFmpegIsNotUsed()
@@ -113,8 +111,6 @@
             }
         }
 
-
-
         ///-------------------------------------------------------------------------------------------------
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting
@@ -133,10 +129,10 @@
                 return;
             }
 
-            if(FFmpegProcess != null)
+            if (FFmpegProcess != null)
             {
                 this.FFmpegProcess.Dispose();
-            }            
+            }
             this.FFmpegProcess = null;
             this.isDisposed = true;
         }
