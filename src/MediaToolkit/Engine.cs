@@ -1,5 +1,6 @@
 ﻿namespace MediaToolkit
 {
+    using MediaToolkit.HLSOptions;
     using MediaToolkit.Model;
     using MediaToolkit.Options;
     using MediaToolkit.Properties;
@@ -74,6 +75,16 @@
             EngineParameters engineParameters = new EngineParameters { CustomArguments = ffmpegCommand };
 
             this.StartFFmpegProcess(engineParameters);
+        }
+
+        public void GenerateHLS(MediaFile input, HLSGeneratingOptions options)
+        {
+            if (options == null)
+            {
+                throw new ArgumentNullException(nameof(options));
+            }
+
+            this.FFmpegEngine(new EngineParameters() { InputFile = input, HLSOptions = options });
         }
 
         /// <summary>
@@ -216,11 +227,12 @@
                     throw new InvalidOperationException(Resources.Exceptions_FFmpeg_Process_Not_Running);
                 }
 
-                //FF MPGET outputs to "sterr" to keep stdout for redirecting to other apps
+                //FFMPEG outputs to "sterr" to keep "stdout" for redirecting to other apps
                 this.FFmpegProcess.ErrorDataReceived += (sender, received) =>
-                {
-                    HandleOutput(engineParameters, received, receivedMessagesLog, ref totalMediaDuration, ref caughtException);
-                };
+                    HandleOutput(engineParameters,
+                    received,
+                    receivedMessagesLog,
+                    ref totalMediaDuration, ref caughtException);
 
                 this.FFmpegProcess.BeginErrorReadLine();
                 this.FFmpegProcess.WaitForExit();

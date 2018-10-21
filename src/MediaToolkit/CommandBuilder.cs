@@ -13,6 +13,9 @@ namespace MediaToolkit
         {
             switch (engineParameters.Task)
             {
+                case FFmpegTask.GenerateHLS:
+                    return GetHLS(engineParameters);
+
                 case FFmpegTask.Convert:
                     return Convert(engineParameters.InputFile, engineParameters.OutputFile, engineParameters.ConversionOptions);
 
@@ -21,9 +24,15 @@ namespace MediaToolkit
 
                 case FFmpegTask.GetThumbnail:
                     return GetThumbnail(engineParameters.InputFile, engineParameters.OutputFile, engineParameters.ConversionOptions);
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private static string GetHLS(EngineParameters engineParameters)
+        {
+            return string.Empty;
         }
 
         private static string GetMetadata(MediaFile inputFile)

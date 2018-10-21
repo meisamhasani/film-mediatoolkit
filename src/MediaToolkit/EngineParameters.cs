@@ -1,5 +1,6 @@
 namespace MediaToolkit
 {
+    using MediaToolkit.HLSOptions;
     using MediaToolkit.Model;
     using MediaToolkit.Options;
     using MediaToolkit.Util;
@@ -20,6 +21,8 @@ namespace MediaToolkit
         /// <summary>   Gets or sets options for controlling the conversion. </summary>
         /// <value> Options that control the conversion. </value>
         internal ConversionOptions ConversionOptions { get; set; }
+
+        internal HLSGeneratingOptions HLSOptions { get; set; }
 
         internal string CustomArguments { get; set; }
 
