@@ -7,9 +7,9 @@ using System.Text;
 
 namespace MediaToolkit
 {
-    internal class CommandBuilder
+    public class CommandBuilder
     {
-        internal static string Serialize(EngineParameters engineParameters)
+        public static string Serialize(EngineParameters engineParameters)
         {
             switch (engineParameters.Task)
             {
@@ -30,17 +30,17 @@ namespace MediaToolkit
             }
         }
 
-        private static string GetHLS(EngineParameters engineParameters)
+        public static string GetHLS(EngineParameters engineParameters)
         {
             return string.Empty;
         }
 
-        private static string GetMetadata(MediaFile inputFile)
+        public static string GetMetadata(MediaFile inputFile)
         {
             return string.Format("-i \"{0}\" ", inputFile.Filename);
         }
 
-        private static string GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
+        public static string GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
         {
             var commandBuilder = new StringBuilder();
 
@@ -52,7 +52,7 @@ namespace MediaToolkit
             return commandBuilder.AppendFormat(" \"{0}\" ", outputFile.Filename).ToString();
         }
 
-        private static string Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
+        public static string Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
         {
             var commandBuilder = new StringBuilder();
 
