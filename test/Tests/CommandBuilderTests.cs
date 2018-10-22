@@ -13,7 +13,7 @@ namespace Tests
             var parameters = new EngineParameters()
             {
                 HLSOptions = new HLSGeneratingOptions(@"D:\test\", "360p_%03d.ts", "360p.m3u8"),
-                InputFile = new MediaFile(@"E:\1.mp4"),
+                InputFile = new MediaFile(@"E:\World_s_Most_Breathtaking_Piano_Pieces_Contemporary_Music_Mix_Vol._1.135.mp4"),
                 Task = FFmpegTask.GenerateHLS
             };
 

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace MediaToolkit
 {
-    public class CommandBuilder
+    public static class CommandBuilder
     {
         public static string Serialize(EngineParameters engineParameters)
         {
@@ -32,7 +32,19 @@ namespace MediaToolkit
 
         public static string GetHLS(EngineParameters engineParameters)
         {
-            return string.Empty;
+            var o = engineParameters.HLSOptions;
+            return string.Concat(
+                "-hide_banner -y ",
+                $"-i {engineParameters.InputFile.Filename}",
+                o.DefaultParams,
+                o.SerializeSpeed(),
+                o.SerializeAudio(),
+                o.SerializeVideo(),
+                o.SerializeScale(),
+                o.SerializeBitrate(),
+                o.SerializeCRF(),
+                o.SerializeKeyframes(),
+                o.SerializeHLSConfig());
         }
 
         public static string GetMetadata(MediaFile inputFile)

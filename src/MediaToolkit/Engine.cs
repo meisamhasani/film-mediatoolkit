@@ -1,6 +1,5 @@
 ﻿namespace MediaToolkit
 {
-    using MediaToolkit.HLSOptions;
     using MediaToolkit.Model;
     using MediaToolkit.Options;
     using MediaToolkit.Properties;
@@ -77,14 +76,9 @@
             this.StartFFmpegProcess(engineParameters);
         }
 
-        public void GenerateHLS(MediaFile input, HLSGeneratingOptions options)
+        public void GenerateHLS(EngineParameters parameters)
         {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            this.FFmpegEngine(new EngineParameters() { InputFile = input, HLSOptions = options });
+            this.FFmpegEngine(parameters);
         }
 
         /// <summary>
@@ -255,6 +249,7 @@
 
             try
             {
+                Console.WriteLine(received.Data);
                 receivedMessagesLog.Insert(0, received.Data);
                 if (engineParameters.InputFile != null)
                 {
