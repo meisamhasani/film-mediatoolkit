@@ -1,6 +1,7 @@
 ﻿using MediaToolkit;
 using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
+using System;
 
 namespace Basic
 {
@@ -15,6 +16,8 @@ namespace Basic
                 Task = FFmpegTask.GenerateHLS
             };
 
+            Console.WriteLine(CommandBuilder.GetHLS(parameters));
+            Console.ReadKey();
             using (var engine = new Engine(@"E:\cmd\ffmpeg.exe"))
             {
                 engine.GenerateHLS(parameters);

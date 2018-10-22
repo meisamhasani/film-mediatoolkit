@@ -96,6 +96,12 @@ namespace MediaToolkit.HLSOptions
 
         public string SerializeScale()
         {
+            string WidthAndHeight()
+                => $"scale=w={this.FilterOptions.Width}:h={this.FilterOptions.Height}";
+
+            string ForceAspectRatio()
+                => $"force_original_aspect_ratio={this.FilterOptions.ForceOriginalRatio}";
+
             if (this.FilterOptions == null
                 ||
                 this.FilterOptions.Width == null
@@ -103,16 +109,6 @@ namespace MediaToolkit.HLSOptions
                 this.FilterOptions.Height == null)
             {
                 return null;
-            }
-
-            string WidthAndHeight()
-            {
-                return $"scale=w={this.FilterOptions.Width}:h={this.FilterOptions.Height}";
-            }
-
-            string ForceAspectRatio()
-            {
-                return $"force_original_aspect_ratio={this.FilterOptions.ForceOriginalRatio}";
             }
 
             return new StringBuilder()
