@@ -1,13 +1,14 @@
 ﻿using MediaToolkit;
 using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
-using System;
+using Xunit;
 
-namespace Basic
+namespace Tests
 {
-    public class Program
+    public class CommandBuilderTests
     {
-        static void Main(string[] args)
+        [Fact]
+        public void Should_Create_Default()
         {
             var parameters = new EngineParameters()
             {
@@ -16,12 +17,7 @@ namespace Basic
                 Task = FFmpegTask.GenerateHLS
             };
 
-            Console.WriteLine(CommandBuilder.GetHLS(parameters));
-            Console.ReadKey();
-            using (var engine = new Engine(@"E:\cmd\ffmpeg.exe"))
-            {
-                engine.GenerateHLS(parameters);
-            }
+            var result = CommandBuilder.GetHLS(parameters);
         }
     }
 }

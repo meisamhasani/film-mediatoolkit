@@ -7,4 +7,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
     <WarningsAsErrors>NU1605</WarningsAsErrors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TebyanValidation" Version="0.0.9" />
+  </ItemGroup>
 </Project>

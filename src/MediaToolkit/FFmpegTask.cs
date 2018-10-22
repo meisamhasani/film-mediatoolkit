@@ -2,15 +2,23 @@ namespace MediaToolkit
 {
     /// -------------------------------------------------------------------------------------------------
     /// <summary>   Values that represent fmpeg tasks. </summary>
-    internal enum FFmpegTask
+    public enum FFmpegTask
     {
-        /// <summary>   An enum constant representing the convert option. </summary>
         Convert,
 
-        /// <summary>   An enum constant representing the get meta data option. </summary>
+        /// <summary>
+        /// Get media metadata
+        /// </summary>
         GetMetaData,
 
-        /// <summary>   An enum constant representing the get thumbnail option. </summary>
-        GetThumbnail
+        /// <summary>
+        /// Generate thumbnail
+        /// </summary>
+        GetThumbnail,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        GenerateHLS
     }
 }

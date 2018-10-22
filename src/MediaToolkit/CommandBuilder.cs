@@ -7,12 +7,15 @@ using System.Text;
 
 namespace MediaToolkit
 {
-    internal class CommandBuilder
+    public static class CommandBuilder
     {
-        internal static string Serialize(EngineParameters engineParameters)
+        public static string Serialize(EngineParameters engineParameters)
         {
             switch (engineParameters.Task)
             {
+                case FFmpegTask.GenerateHLS:
+                    return GetHLS(engineParameters);
+
                 case FFmpegTask.Convert:
                     return Convert(engineParameters.InputFile, engineParameters.OutputFile, engineParameters.ConversionOptions);
 
@@ -21,17 +24,35 @@ namespace MediaToolkit
 
                 case FFmpegTask.GetThumbnail:
                     return GetThumbnail(engineParameters.InputFile, engineParameters.OutputFile, engineParameters.ConversionOptions);
+
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private static string GetMetadata(MediaFile inputFile)
+        public static string GetHLS(EngineParameters engineParameters)
+        {
+            var o = engineParameters.HLSOptions;
+            return string.Concat(
+                "-hide_banner -y ",
+                $"-i {engineParameters.InputFile.Filename}",
+                o.DefaultParams,
+                o.SerializeSpeed(),
+                o.SerializeAudio(),
+                o.SerializeVideo(),
+                o.SerializeScale(),
+                o.SerializeBitrate(),
+                o.SerializeCRF(),
+                o.SerializeKeyframes(),
+                o.SerializeHLSConfig());
+        }
+
+        public static string GetMetadata(MediaFile inputFile)
         {
             return string.Format("-i \"{0}\" ", inputFile.Filename);
         }
 
-        private static string GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
+        public static string GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
         {
             var commandBuilder = new StringBuilder();
 
@@ -43,7 +64,7 @@ namespace MediaToolkit
             return commandBuilder.AppendFormat(" \"{0}\" ", outputFile.Filename).ToString();
         }
 
-        private static string Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
+        public static string Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
         {
             var commandBuilder = new StringBuilder();
 
