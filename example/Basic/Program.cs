@@ -1,13 +1,35 @@
 ﻿using MediaToolkit;
 using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
+using MediaToolkit.Options.GIF;
 using System;
 
 namespace Basic
 {
-    public class Program
+    public static class Program
     {
+        const string FFMPEG = @"E:\cmd\ffmpeg.exe";
+
         static void Main(string[] args)
+        {
+            using (var engine = new Engine(FFMPEG))
+            {
+                GIF(engine);
+            }
+        }
+
+        private static void GIF(Engine engine)
+        {
+            var param = EngineParameters.GIF(
+                new MediaFile(@"E:\1.mp4"),
+                new MediaFile(@"E:\output.gif"),
+                GifGenerationOptions.Default());
+            var result = CommandBuilder.GetGIF(param);
+            Console.WriteLine(result);
+            engine.GenerateGIF(param);
+        }
+
+        private static void HLS(Engine engine)
         {
             var parameters = new EngineParameters()
             {
@@ -16,12 +38,7 @@ namespace Basic
                 Task = FFmpegTask.GenerateHLS
             };
 
-            Console.WriteLine(CommandBuilder.GetHLS(parameters));
-            Console.ReadKey();
-            using (var engine = new Engine(@"E:\cmd\ffmpeg.exe"))
-            {
-                engine.GenerateHLS(parameters);
-            }
+            engine.GenerateHLS(parameters);
         }
     }
 }

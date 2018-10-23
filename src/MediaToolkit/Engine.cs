@@ -76,6 +76,11 @@
             this.StartFFmpegProcess(engineParameters);
         }
 
+        public void GenerateGIF(EngineParameters paramters)
+        {
+            this.FFmpegEngine(paramters);
+        }
+
         public void GenerateHLS(EngineParameters parameters)
         {
             this.FFmpegEngine(parameters);
@@ -249,7 +254,9 @@
 
             try
             {
+#if DEBUG
                 Console.WriteLine(received.Data);
+#endif
                 receivedMessagesLog.Insert(0, received.Data);
                 if (engineParameters.InputFile != null)
                 {
