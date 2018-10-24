@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace MediaToolkit.Util
 {
@@ -23,13 +22,6 @@ namespace MediaToolkit.Util
         {
             return enumerable.ToString()
                 .ToLowerInvariant();
-        }
-
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
-        {
-            if (action == null) throw new ArgumentNullException("action");
-
-            foreach (T t in collection) action(t);
         }
     }
 }

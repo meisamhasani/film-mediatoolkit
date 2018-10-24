@@ -13,6 +13,9 @@ namespace MediaToolkit
         {
             switch (engineParameters.Task)
             {
+                case FFmpegTask.GIF:
+                    return GetGIF(engineParameters);
+
                 case FFmpegTask.GenerateHLS:
                     return GetHLS(engineParameters);
 
@@ -28,6 +31,19 @@ namespace MediaToolkit
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static string GetGIF(EngineParameters engineParameters)
+        {
+            if (!( engineParameters is GIFParameters gif ))
+            {
+                throw new ArgumentException("Paramters must be of type GIfParamters");
+            }
+
+            return string.Concat($"-i {engineParameters.InputFile.Filename}",
+                gif.GifOptions.Serialize(),
+                " ",
+                gif.OutputFile.Filename);
         }
 
         public static string GetHLS(EngineParameters engineParameters)
