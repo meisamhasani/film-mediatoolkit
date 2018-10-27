@@ -1,4 +1,6 @@
-﻿namespace MediaToolkit.Model
+﻿using System;
+
+namespace MediaToolkit.Model
 {
     public class MediaFile
     {
@@ -10,6 +12,9 @@
         }
 
         public string Filename { get; set; }
+
         public Metadata Metadata { get; internal set; }
+
+        public override string ToString() => $"{this.Filename} {Environment.NewLine} {this.Metadata}";
     }
 }

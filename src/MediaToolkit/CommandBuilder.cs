@@ -13,6 +13,9 @@ namespace MediaToolkit
         {
             switch (engineParameters.Task)
             {
+                case FFmpegTask.Check:
+                    return GetHealthCheck(engineParameters);
+
                 case FFmpegTask.GIF:
                     return GetGIF(engineParameters);
 
@@ -31,6 +34,11 @@ namespace MediaToolkit
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        public static string GetHealthCheck(EngineParameters engineParameters)
+        {
+            return $"-hide_banner -y -i {engineParameters.InputFile.Filename} -v error -f null 2>&1";
         }
 
         public static string GetGIF(EngineParameters engineParameters)

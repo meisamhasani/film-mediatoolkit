@@ -14,8 +14,27 @@ namespace Basic
         {
             using (var engine = new Engine(FFMPEG))
             {
-                GIF(engine);
+                var file = new MediaFile(@"E:\1.mp4");
+                HealthCheck(engine, file);
+                foreach (var item in file.Metadata.ErrorCollection)
+                {
+                    Console.WriteLine(item);
+                }
             }
+        }
+
+        private static void HealthCheck(Engine engine, MediaFile input)
+        {
+            engine.HealthCheck(input);
+        }
+
+        private static void Metadata(Engine engine, string path)
+        {
+            var input = new MediaFile(path);
+
+            engine.GetMetadata(input);
+
+            Console.WriteLine(input);
         }
 
         private static void GIF(Engine engine)

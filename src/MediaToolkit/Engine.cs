@@ -68,7 +68,7 @@
         {
             if (ffmpegCommand.IsNullOrWhiteSpace())
             {
-                throw new ArgumentNullException("ffmpegCommand");
+                throw new ArgumentNullException(nameof(ffmpegCommand));
             }
 
             EngineParameters engineParameters = new EngineParameters { CustomArguments = ffmpegCommand };
@@ -79,6 +79,11 @@
         public void GenerateGIF(EngineParameters paramters)
         {
             this.FFmpegEngine(paramters);
+        }
+
+        public void HealthCheck(MediaFile input)
+        {
+            this.FFmpegEngine(new EngineParameters() { InputFile = input });
         }
 
         public void GenerateHLS(EngineParameters parameters)
@@ -180,25 +185,16 @@
         /// <param name="e">    Event information to send to registered event handlers. </param>
         private void OnConversionComplete(ConversionCompleteEventArgs e)
         {
-            EventHandler<ConversionCompleteEventArgs> handler = this.ConversionCompleteEvent;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.ConversionCompleteEvent?.Invoke(this, e);
         }
 
         /// <summary>   Raises the convert progress event. </summary>
         /// <param name="e">    Event information to send to registered event handlers. </param>
         private void OnProgressChanged(ConvertProgressEventArgs e)
         {
-            EventHandler<ConvertProgressEventArgs> handler = this.ConvertProgressEvent;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.ConvertProgressEvent?.Invoke(this, e);
         }
 
-        /// -------------------------------------------------------------------------------------------------
         /// <summary>   Starts FFmpeg process. </summary>
         /// <exception cref="InvalidOperationException">
         ///     Thrown when the requested operation is
@@ -212,7 +208,6 @@
         private void StartFFmpegProcess(EngineParameters engineParameters)
         {
             var receivedMessagesLog = new List<string>();
-            var totalMediaDuration = new TimeSpan();
 
             var processStartInfo = engineParameters.HasCustomArguments
                     ? this.GenerateStartInfo(engineParameters.CustomArguments)
@@ -231,61 +226,40 @@
                     HandleOutput(engineParameters,
                     received,
                     receivedMessagesLog,
-                    ref totalMediaDuration, ref caughtException);
+                    ref caughtException);
 
                 this.FFmpegProcess.BeginErrorReadLine();
                 this.FFmpegProcess.WaitForExit();
 
                 if (( this.FFmpegProcess.ExitCode != 0 && this.FFmpegProcess.ExitCode != 1 ) || caughtException != null)
                 {
-                    throw new Exception(
+                    // If we are checking the file, do not throw
+                    if (engineParameters.Task == FFmpegTask.Check)
+                    {
+                        HandleCheckResult(engineParameters.InputFile, receivedMessagesLog);
+                    }
+                    else
+                    {
+                        throw new Exception(
                         this.FFmpegProcess.ExitCode + ": " + receivedMessagesLog[1] + receivedMessagesLog[0],
                         caughtException);
+                    }
                 }
             }
         }
 
-        private void HandleOutput(EngineParameters engineParameters, DataReceivedEventArgs received, List<string> receivedMessagesLog, ref TimeSpan totalMediaDuration, ref Exception caughtException)
+        private void HandleOutput(EngineParameters engineParameters, DataReceivedEventArgs received, List<string> receivedMessagesLog, ref Exception caughtException)
         {
-            if (received.Data == null)
-            {
-                return;
-            }
+            var totalMediaDuration = new TimeSpan();
 
             try
             {
-#if DEBUG
-                Console.WriteLine(received.Data);
-#endif
                 receivedMessagesLog.Insert(0, received.Data);
-                if (engineParameters.InputFile != null)
-                {
-                    RegexEngine.TestVideo(received.Data, engineParameters);
-                    RegexEngine.TestAudio(received.Data, engineParameters);
 
-                    Match matchDuration = RegexEngine.Index[RegexEngine.Find.Duration].Match(received.Data);
-                    if (matchDuration.Success)
-                    {
-                        if (engineParameters.InputFile.Metadata == null)
-                        {
-                            engineParameters.InputFile.Metadata = new Metadata();
-                        }
+                SetMetadata(engineParameters, received, totalMediaDuration);
 
-                        TimeSpan.TryParse(matchDuration.Groups[1].Value, out totalMediaDuration);
-                        engineParameters.InputFile.Metadata.Duration = totalMediaDuration;
-                    }
-                }
-
-                if (RegexEngine.IsProgressData(received.Data, out ConvertProgressEventArgs progressEvent))
-                {
-                    progressEvent.TotalDuration = totalMediaDuration;
-                    this.OnProgressChanged(progressEvent);
-                }
-                else if (RegexEngine.IsConvertCompleteData(received.Data, out ConversionCompleteEventArgs convertCompleteEvent))
-                {
-                    convertCompleteEvent.TotalDuration = totalMediaDuration;
-                    this.OnConversionComplete(convertCompleteEvent);
-                }
+                HandleProgressResult(received, totalMediaDuration);
+                HandleConversionResult(engineParameters, received, totalMediaDuration);
             }
             catch (Exception ex)
             {
@@ -300,6 +274,65 @@
                 {
                     // swallow exceptions that are thrown when killing the process, 
                     // one possible candidate is the application ending naturally before we get a chance to kill it
+                }
+            }
+        }
+
+        private void HandleCheckResult(MediaFile input, List<string> receivedDataList)
+        {
+            if (input.Metadata == null)
+            {
+                input.Metadata = new Metadata();
+            }
+
+            foreach (var data in receivedDataList)
+            {
+                if (!string.IsNullOrEmpty(data))
+                {
+                    input.Metadata.ErrorCollection.Add(data);
+                }
+            }
+        }
+
+        private void HandleProgressResult(DataReceivedEventArgs received, TimeSpan totalMediaDuration)
+        {
+            if (RegexEngine.IsProgressData(received.Data, out ConvertProgressEventArgs progressEvent))
+            {
+                progressEvent.TotalDuration = totalMediaDuration;
+                this.OnProgressChanged(progressEvent);
+            }
+        }
+
+        private void HandleConversionResult(EngineParameters engineParameters, DataReceivedEventArgs received, TimeSpan totalMediaDuration)
+        {
+            if (engineParameters.Task != FFmpegTask.Convert)
+            {
+                return;
+            }
+            if (RegexEngine.IsConvertCompleteData(received.Data, out ConversionCompleteEventArgs convertCompleteEvent))
+            {
+                convertCompleteEvent.TotalDuration = totalMediaDuration;
+                this.OnConversionComplete(convertCompleteEvent);
+            }
+        }
+
+        private static void SetMetadata(EngineParameters engineParameters, DataReceivedEventArgs received, TimeSpan totalMediaDuration)
+        {
+            if (engineParameters.InputFile != null)
+            {
+                RegexEngine.TestVideo(received.Data, engineParameters);
+                RegexEngine.TestAudio(received.Data, engineParameters);
+
+                Match matchDuration = RegexEngine.Index[RegexEngine.Find.Duration].Match(received.Data);
+                if (matchDuration.Success)
+                {
+                    if (engineParameters.InputFile.Metadata == null)
+                    {
+                        engineParameters.InputFile.Metadata = new Metadata();
+                    }
+
+                    TimeSpan.TryParse(matchDuration.Groups[1].Value, out totalMediaDuration);
+                    engineParameters.InputFile.Metadata.Duration = totalMediaDuration;
                 }
             }
         }
