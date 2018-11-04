@@ -12,7 +12,7 @@ namespace Basic
 
         static void Main(string[] args)
         {
-            using (var engine = new Engine(FFMPEG))
+            using (var engine = new MediaEngine(FFMPEG))
             {
                 var file = new MediaFile(@"E:\1.mp4");
                 HealthCheck(engine, file);
@@ -23,12 +23,12 @@ namespace Basic
             }
         }
 
-        private static void HealthCheck(Engine engine, MediaFile input)
+        private static void HealthCheck(MediaEngine engine, MediaFile input)
         {
             engine.HealthCheck(input);
         }
 
-        private static void Metadata(Engine engine, string path)
+        private static void Metadata(MediaEngine engine, string path)
         {
             var input = new MediaFile(path);
 
@@ -37,7 +37,7 @@ namespace Basic
             Console.WriteLine(input);
         }
 
-        private static void GIF(Engine engine)
+        private static void GIF(MediaEngine engine)
         {
             var param = EngineParameters.GIF(
                 new MediaFile(@"E:\1.mp4"),
@@ -48,7 +48,7 @@ namespace Basic
             engine.GenerateGIF(param);
         }
 
-        private static void HLS(Engine engine)
+        private static void HLS(MediaEngine engine)
         {
             var parameters = new EngineParameters()
             {
