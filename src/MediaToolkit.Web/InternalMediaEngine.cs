@@ -1,4 +1,5 @@
 ﻿using MediaToolkit.Model;
+using System;
 using System.Threading.Tasks;
 
 namespace MediaToolkit.Web
@@ -10,6 +11,13 @@ namespace MediaToolkit.Web
         public InternalMediaEngine(MediaEngine engine)
         {
             this._engine = engine;
+        }
+
+        public Task GenerateHLS(EngineParameters parameters)
+        {
+            Guard.NotNull(parameters, nameof(parameters));
+
+            return Task.Run(() => _engine.GenerateHLS(parameters));
         }
 
         public Task<bool> IsValid(string physicalPath)
