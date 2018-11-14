@@ -53,14 +53,11 @@ namespace Basic
         {
             var parameters = new EngineParameters()
             {
-                HLSOptions = new HLSGeneratingOptions(@"D:\test\", "360p_%03d.ts", "360p.m3u8")
+                HLSOptions = new HLSGeneratingOptions(@"D:\test\", new FilterConfig
                 {
-                    FilterOptions = new FilterConfig
-                    {
-                        Width = 426,
-                        Height = 240
-                    }
-                },
+                    Width = 640,
+                    Height = 360
+                }),
                 InputFile = new MediaFile(@"E:\1.mp4"),
                 Task = FFmpegTask.GenerateHLS
             };
