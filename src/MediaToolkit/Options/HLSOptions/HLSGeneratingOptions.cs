@@ -9,25 +9,9 @@ namespace MediaToolkit.HLSOptions
 {
     public class HLSGeneratingOptions
     {
-        //public HLSGeneratingOptions(string basePath, FilterConfig filterConfig)
-        //    : this(basePath, )
-        //{
-
-        //}
-
-        //private string GetHLSFileName(FilterConfig filterConfig)
-        //{
-        //    switch (filterConfig.Height)
-        //    {
-        //        default:
-        //            break;
-        //    }
-        //}
-
-        //private string GetHLSPlayListFileName(FilterConfig filterConfig)
-        //{
-
-        //}
+        public HLSGeneratingOptions(string basePath) : this(basePath, "360p_%03d.ts", "360p.m3u8")
+        {
+        }
 
         public HLSGeneratingOptions(string basePath, string hlsFileName, string playListFileName)
         {
