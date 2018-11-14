@@ -16,7 +16,8 @@ namespace Basic
             {
                 //var file = new MediaFile(@"E:\1.mp4");
 
-                Metadata(engine, @"E:\00003.mp4");
+                HLS(engine);
+                //Metadata(engine, @"E:\00003.mp4");
                 //HealthCheck(engine, file);
                 //foreach (var item in file.Metadata.ErrorCollection)
                 //{
@@ -52,7 +53,14 @@ namespace Basic
         {
             var parameters = new EngineParameters()
             {
-                HLSOptions = new HLSGeneratingOptions(@"D:\test\", "360p_%03d.ts", "360p.m3u8"),
+                HLSOptions = new HLSGeneratingOptions(@"D:\test\", "360p_%03d.ts", "360p.m3u8")
+                {
+                    FilterOptions = new FilterConfig
+                    {
+                        Width = 426,
+                        Height = 240
+                    }
+                },
                 InputFile = new MediaFile(@"E:\1.mp4"),
                 Task = FFmpegTask.GenerateHLS
             };

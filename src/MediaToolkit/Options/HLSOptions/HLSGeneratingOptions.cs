@@ -9,6 +9,26 @@ namespace MediaToolkit.HLSOptions
 {
     public class HLSGeneratingOptions
     {
+        //public HLSGeneratingOptions(string basePath, FilterConfig filterConfig)
+        //    : this(basePath, )
+        //{
+
+        //}
+
+        //private string GetHLSFileName(FilterConfig filterConfig)
+        //{
+        //    switch (filterConfig.Height)
+        //    {
+        //        default:
+        //            break;
+        //    }
+        //}
+
+        //private string GetHLSPlayListFileName(FilterConfig filterConfig)
+        //{
+
+        //}
+
         public HLSGeneratingOptions(string basePath, string hlsFileName, string playListFileName)
         {
             Guard.NotNullOrEmpty(basePath, nameof(basePath));
@@ -100,7 +120,14 @@ namespace MediaToolkit.HLSOptions
                 => $"scale=w={this.FilterOptions.Width}:h={this.FilterOptions.Height}";
 
             string ForceAspectRatio()
-                => $"force_original_aspect_ratio={this.FilterOptions.ForceOriginalRatio}";
+            {
+                if (string.IsNullOrEmpty(this.FilterOptions.ForceOriginalRatio))
+                {
+                    return null;
+                }
+
+                return $"force_original_aspect_ratio={this.FilterOptions.ForceOriginalRatio}";
+            }
 
             if (this.FilterOptions == null
                 ||
@@ -112,7 +139,7 @@ namespace MediaToolkit.HLSOptions
             }
 
             return new StringBuilder()
-                .Append($" -vf {WidthAndHeight()} {( ForceAspectRatio() != null ? string.Concat(":", ForceAspectRatio()) : null )}")
+                .Append($" -vf {WidthAndHeight()}{( ForceAspectRatio() != null ? string.Concat(":", ForceAspectRatio()) : null )}")
                 .ToString();
         }
     }
