@@ -8,18 +8,20 @@ namespace Basic
 {
     public static class Program
     {
-        const string FFMPEG = @"E:\cmd\ffmpeg.exe";
+        private const string FFMPEG = @"E:\cmd\ffmpeg.exe";
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             using (var engine = new MediaEngine(FFMPEG))
             {
-                var file = new MediaFile(@"E:\1.mp4");
-                HealthCheck(engine, file);
-                foreach (var item in file.Metadata.ErrorCollection)
-                {
-                    Console.WriteLine(item);
-                }
+                //var file = new MediaFile(@"E:\1.mp4");
+
+                Metadata(engine, @"E:\00003.mp4");
+                //HealthCheck(engine, file);
+                //foreach (var item in file.Metadata.ErrorCollection)
+                //{
+                //    Console.WriteLine(item);
+                //}
             }
         }
 
@@ -33,8 +35,6 @@ namespace Basic
             var input = new MediaFile(path);
 
             engine.GetMetadata(input);
-
-            Console.WriteLine(input);
         }
 
         private static void GIF(MediaEngine engine)
@@ -53,7 +53,7 @@ namespace Basic
             var parameters = new EngineParameters()
             {
                 HLSOptions = new HLSGeneratingOptions(@"D:\test\", "360p_%03d.ts", "360p.m3u8"),
-                InputFile = new MediaFile(@"E:\World_s_Most_Breathtaking_Piano_Pieces_Contemporary_Music_Mix_Vol._1.135.mp4"),
+                InputFile = new MediaFile(@"E:\1.mp4"),
                 Task = FFmpegTask.GenerateHLS
             };
 

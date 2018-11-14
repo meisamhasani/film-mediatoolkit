@@ -247,6 +247,11 @@
 
         private void HandleOutput(EngineParameters engineParameters, DataReceivedEventArgs received, List<string> receivedMessagesLog, ref Exception caughtException)
         {
+            if (received.Data == null)
+            {
+                return;
+            }
+
             var totalMediaDuration = new TimeSpan();
 
             try
