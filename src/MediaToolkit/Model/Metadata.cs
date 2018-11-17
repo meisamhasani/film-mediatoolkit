@@ -26,6 +26,9 @@ namespace MediaToolkit.Model
             public int? BitRateKbs { get; internal set; }
             public double Fps { get; internal set; }
 
+            public int Width => int.Parse(this.FrameSize.Split('x')[0]);
+            public int Height => int.Parse(this.FrameSize.Split('x')[1]);
+
             public override string ToString()
             {
                 return $"Video) Format: {this.Format}," +

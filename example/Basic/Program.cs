@@ -16,13 +16,10 @@ namespace Basic
             {
                 //var file = new MediaFile(@"E:\1.mp4");
 
-                HLS(engine);
-                //Metadata(engine, @"E:\00003.mp4");
+                //HLS(engine);
+                Metadata(engine, @"E:\00003.mp4");
                 //HealthCheck(engine, file);
-                //foreach (var item in file.Metadata.ErrorCollection)
-                //{
-                //    Console.WriteLine(item);
-                //}
+
             }
         }
 
