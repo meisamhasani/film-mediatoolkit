@@ -13,6 +13,16 @@ namespace MediaToolkit.Web
             this._engine = engine;
         }
 
+        public async Task<Metadata> Metadata(string path)
+        {
+            Guard.NotNullOrEmpty(path, nameof(path));
+
+            var fileInfo = new MediaFile(path);
+            await Task.Run(() => _engine.GetMetadata(fileInfo));
+
+            return fileInfo.Metadata;
+        }
+
         public Task GenerateHLS(EngineParameters parameters)
         {
             Guard.NotNull(parameters, nameof(parameters));
