@@ -14,18 +14,21 @@ namespace Basic
         {
             using (var engine = new MediaEngine(FFMPEG))
             {
-                //var file = new MediaFile(@"E:\1.mp4");
+                var file = new MediaFile(@"e:\\temp\\qm\\lu\\qmluxvxv2ec3cduj6jmpd2a6c.mp4");
 
                 //HLS(engine);
-                Metadata(engine, @"E:\00003.mp4");
-                //HealthCheck(engine, file);
-
+                //Metadata(engine, @"E:\00003.mp4");
+                HealthCheck(engine, file);
             }
         }
 
         private static void HealthCheck(MediaEngine engine, MediaFile input)
         {
             engine.HealthCheck(input);
+            foreach (var item in input.Metadata.ErrorCollection)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         private static void Metadata(MediaEngine engine, string path)
