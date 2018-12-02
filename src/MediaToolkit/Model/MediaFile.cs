@@ -8,7 +8,8 @@ namespace MediaToolkit.Model
 
         public MediaFile(string filename)
         {
-            Filename = filename;
+            this.Filename = filename;
+            this.Metadata = new Metadata();
         }
 
         public string Filename { get; set; }

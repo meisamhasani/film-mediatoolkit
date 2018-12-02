@@ -1,4 +1,4 @@
-﻿using MediaToolkit.Properties;
+﻿using MediaToolkit.Resources;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -43,15 +43,11 @@ namespace MediaToolkit
             try
             {
                 this.Mutex.WaitOne();
-                foreach (var process in Process.GetProcessesByName(Resources.FFmpegProcessName))
+                foreach (var process in Process.GetProcessesByName(Strings.FFmpegProcessName))
                 {
                     process.Kill();
                     process.WaitForExit();
                 }
-            }
-            catch(Exception ex)
-            {
-
             }
             finally
             {

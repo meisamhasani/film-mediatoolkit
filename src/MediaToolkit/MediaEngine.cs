@@ -2,7 +2,7 @@
 {
     using MediaToolkit.Model;
     using MediaToolkit.Options;
-    using MediaToolkit.Properties;
+    using MediaToolkit.Resources;
     using MediaToolkit.Util;
     using System;
     using System.Collections.Generic;
@@ -14,7 +14,6 @@
     {
         public MediaEngine(string ffMpegPath) : base(ffMpegPath)
         {
-
         }
 
         /// <summary>   Event queue for all listeners interested in convertProgress events. </summary>
@@ -124,7 +123,7 @@
         {
             if (!engineParameters.InputFile.Filename.StartsWith("http://") && !File.Exists(engineParameters.InputFile.Filename))
             {
-                throw new FileNotFoundException(Resources.Exception_Media_Input_File_Not_Found, engineParameters.InputFile.Filename);
+                throw new FileNotFoundException(Strings.Exception_Media_Input_File_Not_Found, engineParameters.InputFile.Filename);
             }
 
             try
@@ -215,7 +214,7 @@
                 Exception caughtException = null;
                 if (this.FFmpegProcess == null)
                 {
-                    throw new InvalidOperationException(Resources.Exceptions_FFmpeg_Process_Not_Running);
+                    throw new InvalidOperationException(Strings.Exceptions_FFmpeg_Process_Not_Running);
                 }
 
                 //FFMPEG outputs to "sterr" to keep "stdout" for redirecting to other apps
