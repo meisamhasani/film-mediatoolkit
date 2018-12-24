@@ -17,8 +17,8 @@ namespace Basic
                 var file = new MediaFile(@"e:\\temp\\qm\\lu\\qmluxvxv2ec3cduj6jmpd2a6c.mp4");
 
                 //HLS(engine);
-                //Metadata(engine, @"E:\00003.mp4");
-                HealthCheck(engine, file);
+                Metadata(engine, @"E:\1.mp4");
+                //HealthCheck(engine, file);
             }
         }
 

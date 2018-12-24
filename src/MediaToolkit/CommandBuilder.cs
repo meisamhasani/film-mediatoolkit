@@ -73,7 +73,7 @@ namespace MediaToolkit
 
         public static string GetMetadata(MediaFile inputFile)
         {
-            return string.Format("-i \"{0}\" ", inputFile.Filename);
+            return string.Format("-i \"{0}\" -f null 2>&1", inputFile.Filename);
         }
 
         public static string GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
