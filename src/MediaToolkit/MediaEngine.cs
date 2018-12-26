@@ -74,16 +74,19 @@
 
         public void GenerateGIF(EngineParameters paramters)
         {
+            paramters.Task = FFmpegTask.GIF;
             this.FFmpegEngine(paramters);
         }
 
         public void HealthCheck(MediaFile input)
         {
-            this.FFmpegEngine(new EngineParameters() { InputFile = input });
+            this.FFmpegEngine(new EngineParameters() { InputFile = input, Task = FFmpegTask.Check });
         }
 
         public void GenerateHLS(EngineParameters parameters)
         {
+            parameters.Task = FFmpegTask.GenerateHLS;
+
             this.FFmpegEngine(parameters);
         }
 
