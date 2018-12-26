@@ -36,7 +36,8 @@ namespace MediaToolkit
             {
                 InputFile = input,
                 OutputFile = output,
-                GifOptions = options
+                GifOptions = options,
+                Task = FFmpegTask.GIF
             };
         }
     }

@@ -3,6 +3,7 @@ using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
 using MediaToolkit.Options.GIF;
 using System;
+using System.Threading.Tasks;
 
 namespace Basic
 {
@@ -17,8 +18,14 @@ namespace Basic
                 var file = new MediaFile(@"e:\\temp\\qm\\lu\\qmluxvxv2ec3cduj6jmpd2a6c.mp4");
 
                 //HLS(engine);
-                Metadata(engine, @"E:\1.mp4");
+                //Metadata(engine, @"E:\1.mp4");
                 //HealthCheck(engine, file);
+                Task.Run(() => GIF(engine));
+                Task.Run(() => GIF(engine));
+                Task.Run(() => GIF(engine));
+                Task.Run(() => GIF(engine));
+                Console.ReadLine();
+                //GIF(engine);
             }
         }
 
@@ -41,8 +48,8 @@ namespace Basic
         private static void GIF(MediaEngine engine)
         {
             var param = EngineParameters.GIF(
-                new MediaFile(@"E:\1.mp4"),
-                new MediaFile(@"E:\output.gif"),
+                new MediaFile(@"E:\00003.mp4"),
+                new MediaFile($@"E:\\{Guid.NewGuid()}.gif"),
                 GifGenerationOptions.Default());
             var result = CommandBuilder.GetGIF(param);
             Console.WriteLine(result);
