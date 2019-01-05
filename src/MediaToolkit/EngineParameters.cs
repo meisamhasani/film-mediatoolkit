@@ -9,6 +9,7 @@ namespace MediaToolkit
     public class EngineParameters
     {
         public bool HasCustomArguments => !this.CustomArguments.IsNullOrWhiteSpace();
+        public ThumbnailOptions ThumbnailOptions { get; set; }
         public ConversionOptions ConversionOptions { get; set; }
         public HLSGeneratingOptions HLSOptions { get; set; }
         public string CustomArguments { get; set; }

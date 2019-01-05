@@ -34,7 +34,7 @@ namespace MediaToolkit.HLSOptions
         public FilterConfig FilterOptions { get; set; } = new FilterConfig();
         public BitRateOptions BitRateOptions { get; set; } = new BitRateOptions();
 
-        public int HLSTime { get; set; } = 8;
+        public int HLSTime { get; set; } = 4;
         public string HLSPlayListType { get; set; } = "vod";
 
         public string HLSSegementFileName { get; set; }

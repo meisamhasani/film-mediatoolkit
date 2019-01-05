@@ -1,5 +1,6 @@
 ﻿namespace MediaToolkit
 {
+    using MediaToolkit.HLSOptions;
     using MediaToolkit.Model;
     using MediaToolkit.Options;
     using MediaToolkit.Resources;
@@ -109,13 +110,12 @@
         /// <param name="inputFile">    Video file. </param>
         /// <param name="outputFile">   Image file. </param>
         /// <param name="options">      Conversion options. </param>
-        public void GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions options)
+        public void GetThumbnail(ThumbnailOptions options)
         {
             var engineParams = new EngineParameters
             {
-                InputFile = inputFile,
-                OutputFile = outputFile,
-                ConversionOptions = options,
+                InputFile = new MediaFile(options.InputFile),
+                ThumbnailOptions = options,
                 Task = FFmpegTask.GetThumbnail
             };
 

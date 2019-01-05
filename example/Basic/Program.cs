@@ -3,7 +3,6 @@ using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
 using MediaToolkit.Options.GIF;
 using System;
-using System.Threading.Tasks;
 
 namespace Basic
 {
@@ -15,16 +14,19 @@ namespace Basic
         {
             using (var engine = new MediaEngine(FFMPEG))
             {
-                var file = new MediaFile(@"e:\\temp\\qm\\lu\\qmluxvxv2ec3cduj6jmpd2a6c.mp4");
+                var file = new MediaFile();
+                engine.GetThumbnail(new ThumbnailOptions(80, @"E:\\00003.mp4", @"C:\temp")
+                {
+                });
 
                 //HLS(engine);
                 //Metadata(engine, @"E:\1.mp4");
                 //HealthCheck(engine, file);
-                Task.Run(() => GIF(engine));
-                Task.Run(() => GIF(engine));
-                Task.Run(() => GIF(engine));
-                Task.Run(() => GIF(engine));
-                Console.ReadLine();
+                //Task.Run(() => GIF(engine));
+                //Task.Run(() => GIF(engine));
+                //Task.Run(() => GIF(engine));
+                //Task.Run(() => GIF(engine));
+
                 //GIF(engine);
             }
         }

@@ -1,4 +1,5 @@
-﻿using MediaToolkit.Model;
+﻿using MediaToolkit.HLSOptions;
+using MediaToolkit.Model;
 using MediaToolkit.Options;
 using MediaToolkit.Util;
 using System;
@@ -29,7 +30,7 @@ namespace MediaToolkit
                     return GetMetadata(engineParameters.InputFile);
 
                 case FFmpegTask.GetThumbnail:
-                    return GetThumbnail(engineParameters.InputFile, engineParameters.OutputFile, engineParameters.ConversionOptions);
+                    return GetThumbnail(engineParameters.ThumbnailOptions);
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -76,16 +77,9 @@ namespace MediaToolkit
             return string.Format("-i \"{0}\" -f null 2>&1", inputFile.Filename);
         }
 
-        public static string GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)
+        public static string GetThumbnail(ThumbnailOptions options)
         {
-            var commandBuilder = new StringBuilder();
-
-            commandBuilder.AppendFormat(CultureInfo.InvariantCulture, " -ss {0} ", conversionOptions.Seek.GetValueOrDefault(TimeSpan.FromSeconds(1)).TotalSeconds);
-
-            commandBuilder.AppendFormat(" -i \"{0}\" ", inputFile.Filename);
-            commandBuilder.AppendFormat(" -vframes {0} ", 1);
-
-            return commandBuilder.AppendFormat(" \"{0}\" ", outputFile.Filename).ToString();
+            return options.Serialize();
         }
 
         public static string Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)

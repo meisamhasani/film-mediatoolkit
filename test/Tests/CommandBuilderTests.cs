@@ -9,6 +9,13 @@ namespace Tests
     public class CommandBuilderTests
     {
         [Fact]
+        public void Should_Generate_TmbConfig()
+        {
+            var options = new ThumbnailOptions(86, @"C:\temp\5.mp4", @"C:\temp");
+            var result = options.Serialize();
+        }
+
+        [Fact]
         public void Should_Create_Default_HLS()
         {
             var parameters = new EngineParameters()

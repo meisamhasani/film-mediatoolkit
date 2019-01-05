@@ -10,28 +10,32 @@ namespace MediaToolkit.HLSOptions
             Height = 240,
             BitRate_LowMotionK = 400,
             BitRate_HighMotionK = 600,
-            Aduio_BitRateK = 64)]
+            Aduio_BitRateK = 64,
+            BandWidthK = 240)]
         P240 = 1,
 
         [VideoResolutions(Width = 640,
             Height = 360,
             BitRate_LowMotionK = 700,
             BitRate_HighMotionK = 900,
-            Aduio_BitRateK = 96)]
+            Aduio_BitRateK = 96,
+            BandWidthK = 800)]
         P360 = 2,
 
         [VideoResolutions(Width = 854,
             Height = 480,
             BitRate_LowMotionK = 1250,
             BitRate_HighMotionK = 1600,
-            Aduio_BitRateK = 128)]
+            Aduio_BitRateK = 128,
+            BandWidthK = 1400)]
         P480 = 3,
 
         [VideoResolutions(Width = 1280,
             Height = 720,
             BitRate_LowMotionK = 2500,
             BitRate_HighMotionK = 3200,
-            Aduio_BitRateK = 128)]
+            Aduio_BitRateK = 128,
+            BandWidthK = 2800)]
         P720_HD = 4,
 
         [VideoResolutions(Width = 1280,
@@ -45,7 +49,8 @@ namespace MediaToolkit.HLSOptions
             Height = 1080,
             BitRate_LowMotionK = 4500,
             BitRate_HighMotionK = 5300,
-            Aduio_BitRateK = 192)]
+            Aduio_BitRateK = 192,
+            BandWidthK = 5000)]
         P1080_HD_FULL = 6,
 
         [VideoResolutions(Width = 1920,
