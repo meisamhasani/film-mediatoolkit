@@ -63,12 +63,12 @@ namespace MediaToolkit.HLSOptions
 
         public string Serialize()
         {
-            return $"-ss {this.Discards} " +
+            return $"-hide_banner -y " +
+                $"-ss {this.Discards} " +
                 $"-i {this.InputFile} " +
-                $"-vf \"select=gt(scene\\,{this.FrameDiff})\" " +
+                $"-vf \"select=gt(scene\\,{this.FrameDiff}),scale=w={this.Width}:h={this.Height}:force_original_aspect_ratio=decrease\" " +
                 $"-frames:v {this.OutputCount} " +
                 $"-vsync vfr" +
-                $" -vf fps=fps=1/{this.FrameRateRatio}" +
                 $" {this.OutputFiles}";
         }
     }

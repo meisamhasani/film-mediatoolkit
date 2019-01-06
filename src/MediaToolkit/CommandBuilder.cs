@@ -79,7 +79,8 @@ namespace MediaToolkit
 
         public static string GetThumbnail(ThumbnailOptions options)
         {
-            return options.Serialize();
+            var result = options.Serialize();
+            return result;
         }
 
         public static string Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions conversionOptions)

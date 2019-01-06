@@ -142,7 +142,7 @@
 
         private ProcessStartInfo GenerateStartInfo(EngineParameters engineParameters)
         {
-            string arguments = CommandBuilder.Serialize(engineParameters);
+            var arguments = CommandBuilder.Serialize(engineParameters);
 
             return this.GenerateStartInfo(arguments);
         }
