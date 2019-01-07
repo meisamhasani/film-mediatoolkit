@@ -15,7 +15,7 @@ namespace Basic
             using (var engine = new MediaEngine(FFMPEG))
             {
                 var file = new MediaFile();
-                engine.GetThumbnail(new ThumbnailOptions(20, @"E:\\00003.mp4", @"C:\temp")
+                engine.GetThumbnail(new ThumbnailOptions(1100, @"E:\\00003.mp4", @"C:\temp")
                 {
                     Width = 320,
                     Height = 240
