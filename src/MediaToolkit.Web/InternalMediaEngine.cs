@@ -1,5 +1,6 @@
 ﻿using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
+using MediaToolkit.Options.GIF;
 using System;
 using System.Threading.Tasks;
 
@@ -48,6 +49,19 @@ namespace MediaToolkit.Web
             Guard.NotNull(options, nameof(options));
 
             return Task.Run(() => this._engine.GetThumbnail(options));
+        }
+
+        public Task Gif(string inputFile, string outputFile, GifGenerationOptions options = null)
+        {
+            Guard.NotNullOrEmpty(inputFile, nameof(inputFile));
+            Guard.NotNullOrEmpty(outputFile, nameof(outputFile));
+
+            var param = EngineParameters.GIF(
+               new MediaFile(inputFile),
+               new MediaFile(outputFile),
+               options ?? GifGenerationOptions.Default());
+
+            return Task.Run(() => _engine.GenerateGIF(param));
         }
     }
 }
