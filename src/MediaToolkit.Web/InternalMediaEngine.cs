@@ -47,10 +47,7 @@ namespace MediaToolkit.Web
         {
             Guard.NotNull(options, nameof(options));
 
-            return Task.Run(() =>
-            {
-                this._engine.GetThumbnail(options);
-            });
+            return Task.Run(() => this._engine.GetThumbnail(options));
         }
     }
 }
