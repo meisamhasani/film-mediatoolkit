@@ -1,4 +1,5 @@
-﻿using MediaToolkit.Model;
+﻿using MediaToolkit.HLSOptions;
+using MediaToolkit.Model;
 using System;
 using System.Threading.Tasks;
 
@@ -39,6 +40,16 @@ namespace MediaToolkit.Web
                 this._engine.HealthCheck(input);
 
                 return input.Metadata.ErrorCollection.Count == 0;
+            });
+        }
+
+        public Task Thumbnail(ThumbnailOptions options)
+        {
+            Guard.NotNull(options, nameof(options));
+
+            return Task.Run(() =>
+            {
+                this._engine.GetThumbnail(options);
             });
         }
     }
