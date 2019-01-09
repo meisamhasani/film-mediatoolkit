@@ -28,7 +28,6 @@ namespace Tests
 		[InlineData(17, @"E:\test\11.mp4", @"E:\test\out")]
 		[InlineData(11, @"E:\test\12.mp4", @"E:\test\out")]
 		[InlineData(21, @"E:\test\13.mp4", @"E:\test\out")]
-
 		public void Should_Generate_TmbConfig(int duration, string inputPath, string outputDirectory)
 		{
 			// 60 sec = 20
@@ -57,7 +56,6 @@ namespace Tests
 		[InlineData(@"E:\test\11.mp4", @"E:\test\out\output11.gif")]
 		[InlineData(@"E:\test\12.mp4", @"E:\test\out\output12.gif")]
 		[InlineData(@"E:\test\13.mp4", @"E:\test\out\output13.gif")]
-
 		public void Should_Generate_GifConfig(string inputPath, string outputDirectory)
 		{
 			var options = EngineParameters.GIF(new MediaFile(inputPath), new MediaFile(outputDirectory), GifGenerationOptions.Default());
