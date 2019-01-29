@@ -2,6 +2,7 @@
 using MediaToolkit.Model;
 using MediaToolkit.Options.GIF;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace MediaToolkit.Web
@@ -48,6 +49,11 @@ namespace MediaToolkit.Web
         {
             Guard.NotNull(options, nameof(options));
 
+            if (!Directory.Exists(options.OutputDirectory))
+            {
+                Directory.CreateDirectory(options.OutputDirectory);
+            }
+
             return Task.Run(() => this._engine.GetThumbnail(options));
         }
 
@@ -55,6 +61,12 @@ namespace MediaToolkit.Web
         {
             Guard.NotNullOrEmpty(inputFile, nameof(inputFile));
             Guard.NotNullOrEmpty(outputFile, nameof(outputFile));
+
+            var outputDirectory = Path.GetDirectoryName(outputFile);
+            if (!Directory.Exists(outputDirectory))
+            {
+                Directory.CreateDirectory(outputDirectory);
+            }
 
             var param = EngineParameters.GIF(
                new MediaFile(inputFile),
