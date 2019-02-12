@@ -1,6 +1,7 @@
 ﻿#pragma warning disable RCS1197
 // Hassan: Refer to https://docs.peer5.com/guides/production-ready-hls-vod/
 
+using Extensions;
 using System;
 using System.IO;
 using System.Text;
@@ -12,6 +13,7 @@ namespace MediaToolkit.HLSOptions
         public HLSGeneratingOptions(string basePath, FilterConfig config)
             : this(basePath, $"{config.Height}p_%03d.ts", $"{config.Height}p.m3u8")
         {
+            this.FilterOptions = config;
         }
 
         public HLSGeneratingOptions(string basePath, string hlsFileName, string playListFileName)
@@ -108,12 +110,10 @@ namespace MediaToolkit.HLSOptions
 
             string ForceAspectRatio()
             {
-                if (string.IsNullOrEmpty(this.FilterOptions.ForceOriginalRatio))
-                {
-                    return null;
-                }
+                var aspectRatio = EnumExtensions.GetEnumDescription(this.FilterOptions.ForceOriginalRatio);
+                Guard.NotNullOrEmpty(aspectRatio, nameof(aspectRatio));
 
-                return $"force_original_aspect_ratio={this.FilterOptions.ForceOriginalRatio}";
+                return $"force_original_aspect_ratio={aspectRatio}";
             }
 
             if (this.FilterOptions == null
