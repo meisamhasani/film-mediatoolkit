@@ -4,6 +4,7 @@ using MediaToolkit.Options;
 using MediaToolkit.Util;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Text;
 
 namespace MediaToolkit
@@ -74,7 +75,9 @@ namespace MediaToolkit
 
         public static string GetMetadata(MediaFile inputFile)
         {
-            return string.Format("-i \"{0}\" -f null 2>&1", inputFile.Filename);
+            var temp = Path.GetTempFileName();
+            return string.Format("-i \"{0}\" -f ffmetadata {1}", inputFile.Filename, temp);
+            //return string.Format("-i \"{0}\" -f null 2>&1", inputFile.Filename);
         }
 
         public static string GetThumbnail(ThumbnailOptions options)

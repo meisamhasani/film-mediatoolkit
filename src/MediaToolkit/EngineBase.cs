@@ -49,6 +49,10 @@ namespace MediaToolkit
                     process.WaitForExit();
                 }
             }
+            catch
+            {
+
+            }
             finally
             {
                 this.Mutex.ReleaseMutex();

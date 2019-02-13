@@ -15,16 +15,17 @@ namespace Basic
             using (var engine = new MediaEngine(FFMPEG))
             {
                 var file = new MediaFile();
-                engine.GetThumbnail(new ThumbnailOptions(1100, @"E:\\00003.mp4", @"\\192.168.20.100\Internal\Hashemi\film")
-                {
-                    Width = 320,
-                    Height = 240
-                });
+                //engine.GetThumbnail(new ThumbnailOptions(1100, @"E:\\00003.mp4", @"\\192.168.20.100\Internal\Hashemi\film")
+                //{
+                //    Width = 320,
+                //    Height = 240
+                //});
 
-                Console.WriteLine("Done");
+                //Console.WriteLine("Done");
 
                 //HLS(engine);
-                //Metadata(engine, @"E:\1.mp4");
+                Metadata(engine, @"d:\temp\1.mp4");
+
                 //HealthCheck(engine, file);
                 //GIF(engine);
                 //Task.Run(() => GIF(engine));
@@ -49,6 +50,8 @@ namespace Basic
             var input = new MediaFile(path);
 
             engine.GetMetadata(input);
+
+            Console.WriteLine(input.Metadata.Duration);
         }
 
         private static void GIF(MediaEngine engine)
