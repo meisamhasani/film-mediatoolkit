@@ -23,8 +23,8 @@ namespace Basic
 
                 //Console.WriteLine("Done");
 
-                //HLS(engine);
-                Metadata(engine, @"d:\temp\1.mp4");
+                HLS(engine);
+                //Metadata(engine, @"d:\temp\1.mp4");
 
                 //HealthCheck(engine, file);
                 //GIF(engine);
@@ -67,12 +67,21 @@ namespace Basic
 
         private static void HLS(MediaEngine engine)
         {
-            var parameters = new EngineParameters()
+            var resolution = new VideoResolutionsAttribute
+            {
+                Width = 854,
+                Height = 480,
+                BitRate_LowMotionK = 1250,
+                BitRate_HighMotionK = 1600,
+                Aduio_BitRateK = 128,
+                BandWidthK = 1400
+            };
+            var parameters = new EngineParameters
             {
                 HLSOptions = new HLSGeneratingOptions(@"D:\test\", new FilterConfig
                 {
-                    Width = 640,
-                    Height = 360
+                    Width = resolution.Width,
+                    Height = resolution.Height
                 }),
                 InputFile = new MediaFile(@"E:\1.mp4"),
                 Task = FFmpegTask.GenerateHLS

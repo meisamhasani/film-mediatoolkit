@@ -11,7 +11,9 @@ namespace MediaToolkit.HLSOptions
             BitRate_LowMotionK = 400,
             BitRate_HighMotionK = 600,
             Aduio_BitRateK = 64,
-            BandWidthK = 240)]
+            BandWidthK = 240,
+            BufferSizeK = 1000,
+            MaxRateK = 856)]
         P240 = 1,
 
         [VideoResolutions(Width = 640,
@@ -19,7 +21,9 @@ namespace MediaToolkit.HLSOptions
             BitRate_LowMotionK = 700,
             BitRate_HighMotionK = 900,
             Aduio_BitRateK = 96,
-            BandWidthK = 800)]
+            BandWidthK = 800,
+            BufferSizeK = 1200,
+            MaxRateK = 856)]
         P360 = 2,
 
         [VideoResolutions(Width = 854,
@@ -27,7 +31,9 @@ namespace MediaToolkit.HLSOptions
             BitRate_LowMotionK = 1250,
             BitRate_HighMotionK = 1600,
             Aduio_BitRateK = 128,
-            BandWidthK = 1400)]
+            BandWidthK = 1400,
+            BufferSizeK = 2100,
+            MaxRateK = 1498)]
         P480 = 3,
 
         [VideoResolutions(Width = 1280,
@@ -35,14 +41,18 @@ namespace MediaToolkit.HLSOptions
             BitRate_LowMotionK = 2500,
             BitRate_HighMotionK = 3200,
             Aduio_BitRateK = 128,
-            BandWidthK = 2800)]
+            BandWidthK = 2800,
+            BufferSizeK = 4200,
+            MaxRateK = 2996)]
         P720_HD = 4,
 
         [VideoResolutions(Width = 1280,
             Height = 720,
             BitRate_LowMotionK = 3500,
             BitRate_HighMotionK = 4400,
-            Aduio_BitRateK = 128)]
+            Aduio_BitRateK = 128,
+            BufferSizeK = 7500,
+            MaxRateK = 5350)]
         P720_HD_60FPS = 5,
 
         [VideoResolutions(Width = 1920,

@@ -207,7 +207,13 @@
         private void StartFFmpegProcess(EngineParameters engineParameters)
         {
             var receivedMessagesLog = new List<string>();
-
+#if DEBUG
+            if (engineParameters.Task == FFmpegTask.GenerateHLS)
+            {
+                var command = CommandBuilder.GetHLS(engineParameters);
+                Console.WriteLine(command);
+            }
+#endif
             var processStartInfo = engineParameters.HasCustomArguments
                     ? this.GenerateStartInfo(engineParameters.CustomArguments)
                     : this.GenerateStartInfo(engineParameters);

@@ -14,6 +14,8 @@ namespace MediaToolkit.HLSOptions
         public int BitRate_HighMotionK { get; set; }
         public int Aduio_BitRateK { get; set; }
         public int BandWidthK { get; set; }
+        public int BufferSizeK { get; set; }
+        public int MaxRateK { get; set; }
     }
 }
 #pragma warning restore RCS1197
