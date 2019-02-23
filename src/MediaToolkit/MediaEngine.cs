@@ -3,6 +3,7 @@
     using MediaToolkit.HLSOptions;
     using MediaToolkit.Model;
     using MediaToolkit.Options;
+    using MediaToolkit.Options.Storyboard;
     using MediaToolkit.Resources;
     using MediaToolkit.Util;
     using System;
@@ -89,6 +90,19 @@
             parameters.Task = FFmpegTask.GenerateHLS;
 
             this.FFmpegEngine(parameters);
+        }
+
+        public void GenerateStoryboard(string inputFileName, StoryBoardOptions options)
+        {
+            Guard.NotNullOrEmpty(inputFileName, nameof(inputFileName));
+            Guard.NotNull(options, nameof(options));
+
+            this.FFmpegEngine(new EngineParameters
+            {
+                InputFile = new MediaFile(inputFileName),
+                StoryBoardOptions = options,
+                Task = FFmpegTask.Storyboard
+            });
         }
 
         /// <summary>
@@ -207,13 +221,6 @@
         private void StartFFmpegProcess(EngineParameters engineParameters)
         {
             var receivedMessagesLog = new List<string>();
-#if DEBUG
-            if (engineParameters.Task == FFmpegTask.GenerateHLS)
-            {
-                var command = CommandBuilder.GetHLS(engineParameters);
-                Console.WriteLine(command);
-            }
-#endif
             var processStartInfo = engineParameters.HasCustomArguments
                     ? this.GenerateStartInfo(engineParameters.CustomArguments)
                     : this.GenerateStartInfo(engineParameters);

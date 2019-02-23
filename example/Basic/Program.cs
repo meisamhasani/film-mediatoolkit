@@ -2,6 +2,7 @@
 using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
 using MediaToolkit.Options.GIF;
+using MediaToolkit.Options.Storyboard;
 using System;
 
 namespace Basic
@@ -15,6 +16,8 @@ namespace Basic
             using (var engine = new MediaEngine(FFMPEG))
             {
                 var file = new MediaFile();
+                Storyboard(engine, @"E:\\00003.mp4");
+                Console.WriteLine("done");
                 //engine.GetThumbnail(new ThumbnailOptions(1100, @"E:\\00003.mp4", @"\\192.168.20.100\Internal\Hashemi\film")
                 //{
                 //    Width = 320,
@@ -22,8 +25,24 @@ namespace Basic
                 //});
 
                 //Console.WriteLine("Done");
+                //var tasks = new List<Task>();
+                //while (true)
+                //{
+                //    Console.Write("Enter input file path or X to exit:>");
+                //    var inputPath = Console.ReadLine();
+                //    if (inputPath == "X")
+                //    {
+                //        break;
+                //    }
+                //    var item = Task.Run(() =>
+                //    {
+                //        HLS(engine, VideoQualities.P720_HD, inputPath, Path.GetDirectoryName(inputPath));
+                //    });
 
-                HLS(engine);
+                //    tasks.Add(item);
+                //}
+
+                //Task.WhenAll(tasks).Wait();
                 //Metadata(engine, @"d:\temp\1.mp4");
 
                 //HealthCheck(engine, file);
@@ -34,6 +53,11 @@ namespace Basic
 
                 //GIF(engine);
             }
+        }
+
+        private static void Storyboard(MediaEngine engine, string inputFile)
+        {
+            engine.GenerateStoryboard(inputFile, new StoryBoardOptions("D:\\temp\\test"));
         }
 
         private static void HealthCheck(MediaEngine engine, MediaFile input)
@@ -57,33 +81,53 @@ namespace Basic
         private static void GIF(MediaEngine engine)
         {
             var param = EngineParameters.GIF(
-                new MediaFile(@"E:\00003.mp4"),
-                new MediaFile($@"E:\\{Guid.NewGuid()}.gif"),
+                new MediaFile(@"D:\1.mp4"),
+                new MediaFile($@"d:\\temp\\test\\{Guid.NewGuid()}.gif"),
                 GifGenerationOptions.Default());
             var result = CommandBuilder.GetGIF(param);
             Console.WriteLine(result);
             engine.GenerateGIF(param);
         }
 
-        private static void HLS(MediaEngine engine)
+        private static void HLS(MediaEngine engine, VideoQualities quality, string inputFile, string outputDirectory)
         {
-            var resolution = new VideoResolutionsAttribute
+            VideoResolutionsAttribute GetResolutionInfo(Enum value)
             {
-                Width = 854,
-                Height = 480,
-                BitRate_LowMotionK = 1250,
-                BitRate_HighMotionK = 1600,
-                Aduio_BitRateK = 128,
-                BandWidthK = 1400
+                var filedInfo = value.GetType().GetField(value.ToString());
+
+                var attrs = (VideoResolutionsAttribute[])filedInfo
+                    .GetCustomAttributes(typeof(VideoResolutionsAttribute), false);
+
+                return attrs[0];
+            }
+
+            var profile = GetResolutionInfo(quality);
+            var hls = new HLSGeneratingOptions(outputDirectory, new FilterConfig
+            {
+                Height = profile.Height,
+                Width = profile.Width,
+                ForceOriginalRatio = ForceOriginalAspectRatio.Increase
+            })
+            {
+                BitRateOptions = new BitRateOptions
+                {
+                    Audio = new BitRateOptions.AudioBitrate
+                    {
+                        Value = profile.Aduio_BitRateK * 1000
+                    },
+                    Video = new BitRateOptions.VideoBitrate
+                    {
+                        Value = profile.BitRate_HighMotionK * 1000,
+                        Max = profile.MaxRateK * 1000,
+                        BufferSize = profile.BufferSizeK * 1000
+                    }
+                }
             };
+
             var parameters = new EngineParameters
             {
-                HLSOptions = new HLSGeneratingOptions(@"D:\test\", new FilterConfig
-                {
-                    Width = resolution.Width,
-                    Height = resolution.Height
-                }),
-                InputFile = new MediaFile(@"E:\1.mp4"),
+                HLSOptions = hls,
+                InputFile = new MediaFile(inputFile),
                 Task = FFmpegTask.GenerateHLS
             };
 

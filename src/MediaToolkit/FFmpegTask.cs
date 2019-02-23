@@ -8,6 +8,7 @@ namespace MediaToolkit
         Convert,
         GetMetaData,
         GetThumbnail,
-        GenerateHLS
+        GenerateHLS,
+        Storyboard
     }
 }

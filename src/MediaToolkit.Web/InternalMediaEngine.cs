@@ -1,6 +1,7 @@
 ﻿using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
 using MediaToolkit.Options.GIF;
+using MediaToolkit.Options.Storyboard;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,6 +15,23 @@ namespace MediaToolkit.Web
         public InternalMediaEngine(MediaEngine engine)
         {
             this._engine = engine;
+        }
+
+        public Task Storyboard(string inputFile, StoryBoardOptions options)
+        {
+            Guard.NotNullOrEmpty(inputFile, nameof(inputFile));
+
+            if (!File.Exists(inputFile))
+            {
+                throw new FileNotFoundException(inputFile);
+            }
+
+            if (!Directory.Exists(options.OutputDirectory))
+            {
+                Directory.CreateDirectory(options.OutputDirectory);
+            }
+
+            return Task.Run(() => _engine.GenerateStoryboard(inputFile, options));
         }
 
         public async Task<Metadata> Metadata(string path)

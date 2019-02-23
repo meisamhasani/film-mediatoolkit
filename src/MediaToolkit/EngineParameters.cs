@@ -2,6 +2,7 @@ using MediaToolkit.HLSOptions;
 using MediaToolkit.Model;
 using MediaToolkit.Options;
 using MediaToolkit.Options.GIF;
+using MediaToolkit.Options.Storyboard;
 using MediaToolkit.Util;
 
 namespace MediaToolkit
@@ -9,6 +10,8 @@ namespace MediaToolkit
     public class EngineParameters
     {
         public bool HasCustomArguments => !this.CustomArguments.IsNullOrWhiteSpace();
+
+        public StoryBoardOptions StoryBoardOptions { get; set; }
         public ThumbnailOptions ThumbnailOptions { get; set; }
         public ConversionOptions ConversionOptions { get; set; }
         public HLSGeneratingOptions HLSOptions { get; set; }

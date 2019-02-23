@@ -15,6 +15,9 @@ namespace MediaToolkit
         {
             switch (engineParameters.Task)
             {
+                case FFmpegTask.Storyboard:
+                    return GetStoryboard(engineParameters);
+
                 case FFmpegTask.Check:
                     return GetHealthCheck(engineParameters);
 
@@ -36,6 +39,13 @@ namespace MediaToolkit
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private static string GetStoryboard(EngineParameters engineParameters)
+        {
+            var result = $"-hide_banner -y -i {engineParameters.InputFile.Filename} {engineParameters.StoryBoardOptions.Serialize()}";
+
+            return result;
         }
 
         public static string GetHealthCheck(EngineParameters engineParameters)

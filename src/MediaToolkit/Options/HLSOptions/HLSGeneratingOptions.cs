@@ -110,6 +110,8 @@ namespace MediaToolkit.HLSOptions
 
             string ForceAspectRatio()
             {
+                // TODO: this throws 
+                return null;
                 var aspectRatio = EnumExtensions.GetEnumDescription(this.FilterOptions.ForceOriginalRatio);
                 Guard.NotNullOrEmpty(aspectRatio, nameof(aspectRatio));
 
