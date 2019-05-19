@@ -55,7 +55,7 @@ namespace MediaToolkit
 
         public static string GetGIF(EngineParameters engineParameters)
         {
-            if (!( engineParameters is GIFParameters gif ))
+            if (!(engineParameters is GIFParameters gif))
             {
                 throw new ArgumentException("Paramters must be of type GIfParamters");
             }

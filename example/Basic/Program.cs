@@ -4,6 +4,8 @@ using MediaToolkit.Model;
 using MediaToolkit.Options.GIF;
 using MediaToolkit.Options.Storyboard;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Basic
 {
@@ -15,15 +17,16 @@ namespace Basic
         {
             using (var engine = new MediaEngine(FFMPEG))
             {
-                var file = new MediaFile();
-                Storyboard(engine, @"E:\\00003.mp4");
-                Console.WriteLine("done");
+                //var file = new MediaFile();
+                //Storyboard(engine, @"E:\\00003.mp4");
+                //Console.WriteLine("done");
                 //engine.GetThumbnail(new ThumbnailOptions(1100, @"E:\\00003.mp4", @"\\192.168.20.100\Internal\Hashemi\film")
                 //{
                 //    Width = 320,
                 //    Height = 240
                 //});
-
+           
+                // HLS(engine, VideoQualities.P720_HD, inputPath, direcotry);
                 //Console.WriteLine("Done");
                 //var tasks = new List<Task>();
                 //while (true)
@@ -49,9 +52,9 @@ namespace Basic
                 //GIF(engine);
                 //Task.Run(() => GIF(engine));
                 //Task.Run(() => GIF(engine));
-                //Task.Run(() => GIF(engine));
+                //Task.Run(() => GIF(engine)).wa;
 
-                //GIF(engine);
+                GIF(engine);
             }
         }
 
@@ -82,7 +85,7 @@ namespace Basic
         {
             var param = EngineParameters.GIF(
                 new MediaFile(@"D:\1.mp4"),
-                new MediaFile($@"d:\\temp\\test\\{Guid.NewGuid()}.gif"),
+                new MediaFile($@"d:\\{Guid.NewGuid()}.gif"),
                 GifGenerationOptions.Default());
             var result = CommandBuilder.GetGIF(param);
             Console.WriteLine(result);

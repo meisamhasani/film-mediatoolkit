@@ -4,7 +4,7 @@
     {
         public int? Width { get; set; }
         public int? Height { get; set; }
-        public ForceOriginalAspectRatio ForceOriginalRatio { get; set; } = ForceOriginalAspectRatio.Decrease;
+        public ForceOriginalAspectRatio? ForceOriginalRatio { get; set; }
     }
 
     // c: v
