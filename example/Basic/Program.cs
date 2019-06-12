@@ -46,7 +46,7 @@ namespace Basic
                 //}
 
                 //Task.WhenAll(tasks).Wait();
-                //Metadata(engine, @"d:\temp\1.mp4");
+                Metadata(engine, @"C:\Users\Hassan\Downloads\Video\144-3.mp4");
 
                 //HealthCheck(engine, file);
                 //GIF(engine);

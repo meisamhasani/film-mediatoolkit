@@ -1,11 +1,20 @@
 ﻿#pragma warning disable RCS1197
 // Hassan: Refer to https://docs.peer5.com/guides/production-ready-hls-vod/
 
-
 namespace MediaToolkit.HLSOptions
 {
     public enum VideoQualities
     {
+        [VideoResolutions(Width = 264,
+            Height = 144,
+            BitRate_LowMotionK = 80,
+            BitRate_HighMotionK = 100,
+            Aduio_BitRateK = 32,
+            BandWidthK = 200,
+            BufferSizeK = 800,
+            MaxRateK = 856)]
+        P144 = 0,
+
         [VideoResolutions(Width = 426,
             Height = 240,
             BitRate_LowMotionK = 400,
