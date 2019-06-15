@@ -9,7 +9,7 @@ namespace MediaToolkit.HLSOptions
             Height = 144,
             BitRate_LowMotionK = 80,
             BitRate_HighMotionK = 100,
-            Aduio_BitRateK = 32,
+            Aduio_BitRateK = 80,
             BandWidthK = 200,
             BufferSizeK = 800,
             MaxRateK = 856)]
