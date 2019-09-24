@@ -22,10 +22,5 @@ namespace MediaToolkit.Web
             services.AddTransient(_ => new MediaEngine(ffmpegPath));
             services.AddTransient<IMediaEngine, InternalMediaEngine>();
         }
-
-        public static void AddMediaEngine(this IServiceCollection services, IConfiguration config)
-        {
-            AddMediaEngine(services, config.GetSection("MediaConfig:FFMPEG").Value);
-        }
     }
 }
